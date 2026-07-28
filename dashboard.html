@@ -1,0 +1,20 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Trade GUI — Session Close</title>
+<style>body{background:#0e0c0a;color:#f3ece1;font-family:system-ui,sans-serif;padding:24px}
+h1{color:#c9a24b}.cards{display:flex;gap:14px;margin:18px 0}.card{background:#17140f;border:1px solid #2c261c;border-radius:10px;padding:14px;min-width:140px}
+.card .k{color:#a99e8c;font-size:12px}.card .v{font-size:22px;font-weight:700;margin-top:6px}.pos{color:#3fae6b}.neg{color:#d7645a}
+table{width:100%;border-collapse:collapse;background:#17140f;border:1px solid #2c261c;border-radius:10px;overflow:hidden}
+th,td{padding:10px 12px;border-bottom:1px solid #2c261c;text-align:left;font-size:13px}
+th{color:#a99e8c;text-transform:uppercase;font-size:11px;background:#1f1b14}.win{color:#3fae6b}.loss{color:#d7645a}
+.legend{color:#a99e8c;font-size:12px;margin-top:10px}</style></head>
+<body><h1>KANCHAN TRADE DESK — Session Close</h1>
+<div class="cards">
+<div class="card"><div class="k">Equity</div><div class="v pos">$25027.13</div></div>
+<div class="card"><div class="k">Session P&L</div><div class="v pos">+27.13</div></div>
+<div class="card"><div class="k">Win rate</div><div class="v">57.1%</div></div>
+<div class="card"><div class="k">Trades</div><div class="v">7</div></div>
+<div class="card"><div class="k">Wins / Losses</div><div class="v">4 / 3</div></div>
+</div>
+<h3>Trade Log</h3>
+<table><thead><tr><th>Ticker</th><th>Side</th><th>Entry</th><th>Exit</th><th>Qty</th><th>P&L</th></tr></thead><tbody><tr class="loss"><td>USO</td><td>long</td><td>131.68</td><td>130.21</td><td>28</td><td class="loss">-41.16</td></tr><tr class="win"><td>GOOGL</td><td>long</td><td>342.09</td><td>342.85</td><td>10</td><td class="win">+7.6</td></tr><tr class="loss"><td>AAPL</td><td>long</td><td>325.89</td><td>323.53</td><td>11</td><td class="loss">-25.96</td></tr><tr class="loss"><td>GLD</td><td>long</td><td>379.12</td><td>375.25</td><td>9</td><td class="loss">-34.83</td></tr><tr class="win"><td>JPM</td><td>long</td><td>348.21</td><td>349.7</td><td>10</td><td class="win">+14.9</td></tr><tr class="win"><td>SLV</td><td>long</td><td>53.92</td><td>54.49</td><td>69</td><td class="win">+39.33</td></tr><tr class="win"><td>QQQ</td><td>long</td><td>705.35</td><td>718.8</td><td>5</td><td class="win">+67.25</td></tr></tbody></table>
+<div class="legend">Simulation only — no real orders. Generated at session close. Source: data/trade-log.csv</div>
+</body></html>
