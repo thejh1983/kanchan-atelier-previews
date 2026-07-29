@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kanchan Atelier — Owner Portal Preview</title>
+<style>
+  :root{
+    --ink:#1b1915;
+    --paper:#f6f1e8;
+    --paper-deep:#efe7d8;
+    --sand:#e6dbc8;
+    --gold:#b88a44;
+    --gold-soft:#dcb978;
+    --green:#2f5e4f;
+    --green-bg:#e5f0eb;
+    --maroon:#7a2c3d;
+    --red-bg:#f5e4e6;
+    --line:rgba(35,30,22,.12);
+    --shadow:0 18px 50px rgba(35,30,22,.12);
+    --display:'Cormorant Garamond',Georgia,serif;
+    --body:Montserrat,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body)}
+  .shell{min-height:100vh;display:grid;grid-template-columns:272px 1fr;grid-template-rows:76px 1fr}
+  .topbar{grid-column:1/3;display:flex;align-items:center;justify-content:space-between;gap:22px;padding:0 clamp(18px,4vw,60px);border-bottom:1px solid var(--line);background:rgba(246,241,232,.96);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100}
+  .brand{display:flex;align-items:center;gap:18px;color:inherit;text-decoration:none}
+  .brand .logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--gold),#7a5a2b);display:grid;place-items:center;color:#281a08;font-weight:800;font-size:.8rem;letter-spacing:.02em}
+  .brand .titles{display:flex;flex-direction:column;gap:2px}
+  .brand .name{font-weight:700;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase}
+  .brand .sub{font-size:.62rem;color:#8a7f6e;letter-spacing:.18em;text-transform:uppercase}
+  .top-actions{display:flex;align-items:center;gap:10px}
+  .search{min-width:220px;min-height:40px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font-size:.72rem;outline:0}
+  .search:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(184,138,68,.12)}
+  .icon-btn{width:40px;height:40px;border-radius:999px;border:1px solid var(--line);background:#fff;display:inline-grid;place-items:center;color:#6b6258;cursor:pointer;position:relative}
+  .icon-btn .dot{position:absolute;top:8px;right:8px;width:7px;height:7px;border-radius:999px;background:var(--maroon);box-shadow:0 0 0 2px #fff}
+  .avatar{width:40px;height:40px;border-radius:999px;border:1px solid var(--line);background:linear-gradient(135deg,#f1e5d2,#dcb978);display:inline-grid;place-items:center;color:#3d2b12;font-weight:700;font-size:.72rem}
+  .owner-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:.62rem;font-weight:700;color:#5e5548;letter-spacing:.08em;text-transform:uppercase}
+  .owner-pill .dot{width:8px;height:8px;border-radius:999px;background:var(--green);box-shadow:0 0 0 3px var(--green-bg)}
+
+  .sidebar{grid-row:2;background:#fff;border-right:1px solid var(--line);padding:22px 14px;overflow:auto}
+  .nav h4{margin:22px 10px 8px;color:#8a7f6e;font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+  .nav a{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:12px;color:#5e5548;text-decoration:none;font-size:.68rem;font-weight:600;margin:2px 0;border:1px solid transparent}
+  .nav a.active{background:linear-gradient(90deg,rgba(184,138,68,.14),rgba(184,138,68,.03));color:#3d2b12;border-color:rgba(184,138,68,.22)}
+  .nav a .tag{margin-left:8px;padding:3px 8px;border-radius:999px;background:var(--green-bg);color:var(--green);font-size:.5rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(47,94,79,.18)}
+
+  .main{grid-row:2;padding:clamp(40px,5.5vw,76px) clamp(18px,4.5vw,68px) 90px;width:min(1440px,100%);margin:auto}
+  .crumb{color:#8a7f6e;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700}
+  h1{margin:8px 0 6px;font:500 clamp(2.8rem,5.2vw,5.2rem)/.88 var(--display);letter-spacing:-.035em}
+  .sub{margin:0 0 22px;color:#6b6258;font-size:.8rem;line-height:1.6;max-width:720px}
+  .toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+  .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:.6rem;font-weight:700;color:#6b6258;letter-spacing:.08em;text-transform:uppercase}
+
+  .grid{display:grid;grid-template-columns:repeat(4,minmax(170px,1fr));gap:16px;margin-bottom:22px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 10px 30px rgba(35,30,22,.07)}
+  .card .k{color:#7a7060;font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+  .card .v{margin-top:10px;font:600 clamp(1.55rem,2vw,2rem)/.95 var(--display);letter-spacing:-.02em}
+  .card .d{margin-top:6px;color:#7a7060;font-size:.66rem;line-height:1.45}
+  .pos{color:var(--green)} .neg{color:var(--maroon)} .warn{color:#8a6a1e}
+
+  .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-bottom:22px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 10px 30px rgba(35,30,22,.07)}
+  .panel h3{margin:0;font:600 1.45rem/1 var(--display)}
+  .panel p{margin:8px 0 0;color:#6b6258;font-size:.72rem;line-height:1.55}
+
+  .mini-chart{height:170px;margin-top:18px;display:flex;align-items:end;gap:clamp(12px,2.6vw,28px);padding:14px 16px 0}
+  .mini-chart div{min-width:28px;flex:1;display:grid;align-items:end;gap:8px;text-align:center}
+  .mini-chart span{min-height:3px;border-radius:8px 8px 0 0;background:linear-gradient(0deg,var(--gold),var(--gold-soft))}
+  .mini-chart small{color:#5e5548;font-size:.52rem}
+
+  .catalog-grid{margin-top:22px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+  .catalog-card{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:0 10px 30px rgba(35,30,22,.08)}
+  .catalog-art{position:relative;overflow:hidden;background:var(--paper-deep);aspect-ratio:1/1.05}
+  .catalog-art img{width:100%;height:100%;object-fit:cover}
+  .catalog-copy{padding:16px 16px 18px}
+  .catalog-copy h2{margin:0 0 4px;font:600 1.22rem/1.05 var(--display)}
+  .catalog-copy p{margin:0 0 6px;color:#6b6258;font-size:.64rem;min-height:1.1em}
+  .catalog-copy strong{color:var(--gold);font-size:.7rem}
+  .catalog-actions{margin-top:14px;display:flex;align-items:center;justify-content:space-between}
+
+  .button{min-height:42px;padding:0 18px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--paper);font-size:.66rem;font-weight:700;text-decoration:none;cursor:pointer}
+  .button:hover{background:#302a22}
+  .button.secondary{background:transparent;color:var(--ink)}
+  .button.ghost{border-color:var(--line);background:#fff;color:var(--ink)}
+
+  @media(max-width:1100px){
+    .grid{grid-template-columns:repeat(2,minmax(150px,1fr))}
+    .catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .two{grid-template-columns:1fr}
+  }
+  @media(max-width:720px){
+    .shell{grid-template-columns:1fr}
+    .sidebar{display:none}
+    .topbar{padding:0 14px}
+    .grid{grid-template-columns:1fr}
+    .catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <a class="brand" href="#">
+      <div class="logo">KA</div>
+      <div class="titles">
+        <span class="name">Kanchan Atelier</span>
+        <span class="sub">Owner Administration</span>
+      </div>
+    </a>
+    <div class="top-actions">
+      <input class="search" placeholder="Search catalog, orders, materials…" />
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        <span class="dot"></span>
+      </button>
+      <button class="icon-btn" aria-label="Help">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </button>
+      <span class="owner-pill"><span class="dot"></span> MFA protected</span>
+      <span class="avatar">JR</span>
+    </div>
+  </header>
+
+  <nav class="sidebar">
+    <div class="nav">
+      <h4>Overview</h4>
+      <a href="#dashboard" class="active"><span>Business Overview</span></a>
+
+      <h4>Commerce</h4>
+      <a href="#sales"><span>Sales & Orders</span></a>
+      <a href="#products"><span>Products & Pricing</span></a>
+
+      <h4>Inventory</h4>
+      <a href="#materials"><span>Bulk Materials & ETA</span><span class="tag">Live</span></a>
+
+      <h4>Finance</h4>
+      <a href="#pl"><span>Profit & Loss</span></a>
+      <a href="#expenses"><span>Expenses & Bills</span></a>
+      <a href="#taxes"><span>Taxes & Liabilities</span></a>
+
+      <h4>People</h4>
+      <a href="#team"><span>Team & Wages</span></a>
+
+      <h4>Insights</h4>
+      <a href="#reports"><span>Reports & Exports</span></a>
+
+      <h4>Marketing</h4>
+      <a href="#marketing"><span>Theme Studio</span><span class="tag">New</span></a>
+      <a href="#assistant"><span>Owner Assistant</span></a>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="crumb">Owner overview</div>
+    <h1>Business Overview</h1>
+    <p class="sub">One decision layer for commerce, operations, finance, people, insights, and marketing — without duplicating the underlying records.</p>
+
+    <div class="toolbar">
+      <span class="pill">This month</span>
+      <span class="pill">Estimates only</span>
+      <button class="button secondary">Refresh data</button>
+    </div>
+
+    <section class="grid" aria-label="Key metrics">
+      <article class="card"><div class="k">Gross sales</div><div class="v">NPR 2,500</div><div class="d">1 orders</div></article>
+      <article class="card"><div class="k">Net revenue</div><div class="v pos">NPR 2,500</div><div class="d">After discounts & refunds</div></article>
+      <article class="card"><div class="k">Estimated net profit after tax</div><div class="v warn">— NPR 222,261</div><div class="d">High operating baseline</div></article>
+      <article class="card"><div class="k">Cost of goods sold</div><div class="v">NPR 1,350</div><div class="d">2 sold items</div></article>
+      <article class="card"><div class="k">Operating expenses</div><div class="v neg">NPR 192,500</div><div class="d">Rent · utilities · payroll</div></article>
+      <article class="card"><div class="k">Taxes collected</div><div class="v">NPR 199</div><div class="d">Held as liability</div></article>
+      <article class="card"><div class="k">Low-stock materials</div><div class="v warn">1</div><div class="d">Demo Organic Cotton Roll</div></article>
+      <article class="card"><div class="k">Avg order value</div><div class="v">NPR 2,500</div><div class="d">Net revenue ÷ orders</div></article>
+    </section>
+
+    <div class="two">
+      <section class="panel">
+        <h3>Period comparison</h3>
+        <p>This month against the previous equivalent period.</p>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)"><span>Net sales</span><strong>NPR 2,500</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)"><span>Gross profit</span><strong class="pos">NPR 1,150</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0"><span>Net profit after tax</span><strong class="neg">— NPR 222,261</strong></div>
+        <div class="mini-chart" aria-label="Chart">
+          <div><span style="height:45%"></span><small>Gross</small></div>
+          <div><span style="height:42%"></span><small>Net</small></div>
+          <div><span style="height:18%"></span><small>Profit</small></div>
+          <div><span style="height:6%"></span><small>Tax</small></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h3>Cost breakdown</h3>
+        <p>Where money was allocated this period.</p>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)"><span>Employee wages</span><strong>NPR 25,368</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)"><span>Rent</span><strong>NPR 95,000</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)"><span>Utilities</span><strong>NPR 32,000</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)"><span>Bulk materials purchased</span><strong>NPR 0</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)"><span>Payment fees</span><strong>NPR 76</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)"><span>Shipping cost</span><strong>NPR 85</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:10px 0"><span>Miscellaneous</span><strong>NPR 0</strong></div>
+      </section>
+    </div>
+
+    <div class="two">
+      <section class="panel">
+        <h3>Best-selling products</h3>
+        <p>Ranked by units sold this month.</p>
+        <ol style="margin:0;padding:0;list-style:none;display:grid;gap:9px">
+          <li style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)"><span>KA Washed Hoodie</span><strong style="color:var(--green)">1 sold</strong></li>
+          <li style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)"><span>Botanical Print Tee</span><strong style="color:var(--green)">1 sold</strong></li>
+          <li style="display:flex;align-items:center;justify-content:space-between;padding:10px 0"><span>Core Cashmere Turtleneck</span><strong style="color:var(--green)">1 sold</strong></li>
+        </ol>
+      </section>
+
+      <section class="panel">
+        <h3>Inventory and financial alerts</h3>
+        <p>Items that may need attention.</p>
+        <article style="margin-top:10px;padding:14px;border:1px solid var(--line);border-radius:16px;background:#fffdf8">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><span style="padding:5px 9px;border-radius:999px;background:#fff3c4;color:#7a5a1e;font-size:.52rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(122,90,30,.18)">Low stock</span><strong>Demo Organic Cotton Roll</strong></div>
+          <small style="color:#766b5c">12 linear_meter remaining · reorder threshold 15 · below safety level</small>
+        </article>
+      </section>
+    </div>
+
+    <section class="panel" style="margin-top:4px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:14px">
+        <div>
+          <h3>Shop Essentials</h3>
+          <p>Exact storefront view. Owners can only add new pictures.</p>
+        </div>
+        <button class="button">Add new picture</button>
+      </div>
+      <section class="catalog-grid" aria-label="Shop Essentials">
+        <article class="catalog-card">
+          <div class="catalog-art"><div style="height:100%;display:grid;place-items:center;color:#8a7f6e;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase">No picture yet</div></div>
+          <div class="catalog-copy"><h2>Core Cashmere Turtleneck</h2><p>Grade-A Mongolian cashmere</p><strong>NPR 295</strong><div class="catalog-actions"><button class="button secondary">Add new picture</button></div></div>
+        </article>
+        <article class="catalog-card">
+          <div class="catalog-art"><div style="height:100%;display:grid;place-items:center;color:#8a7f6e;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase">No picture yet</div></div>
+          <div class="catalog-copy"><h2>Meridian Chronograph</h2><p>Swiss-grade movement</p><strong>NPR 580</strong><div class="catalog-actions"><button class="button secondary">Add new picture</button></div></div>
+        </article>
+        <article class="catalog-card">
+          <div class="catalog-art"><div style="height:100%;display:grid;place-items:center;color:#8a7f6e;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase">No picture yet</div></div>
+          <div class="catalog-copy"><h2>Washed Hoodie</h2><p>Heavyweight fleece</p><strong>NPR 340</strong><div class="catalog-actions"><button class="button secondary">Add new picture</button></div></div>
+        </article>
+        <article class="catalog-card">
+          <div class="catalog-art"><div style="height:100%;display:grid;place-items:center;color:#8a7f6e;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase">No picture yet</div></div>
+          <div class="catalog-copy"><h2>Linen Relaxed Tee</h2><p>Relaxed fit</p><strong>NPR 210</strong><div class="catalog-actions"><button class="button secondary">Add new picture</button></div></div>
+        </article>
+      </section>
+    </section>
+  </main>
+</div>
+</body>
+</html>
